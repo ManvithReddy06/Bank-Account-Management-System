@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Loans - Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        .approve-btn {
+            background-color: green;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+        .reject-btn {
+            background-color: red;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>Loan Management - Admin Panel</h2>
+    
+    <table>
+        <tr>
+            <th>Loan ID</th>
+            <th>Username</th>
+            <th>Loan Amount</th>
+            <th>Interest Rate (%)</th>
+            <th>Duration (Months)</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        {% for loan in loans %}
+        <tr>
+            <td>{{ loan.id }}</td>
+            <td>{{ loan.username }}</td>
+            <td>${{ loan.loan_amount }}</td>
+            <td>{{ loan.interest_rate }}%</td>
+            <td>{{ loan.duration }} months</td>
+            <td>{{ loan.status }}</td>
+            <td>
+                {% if loan.status == 'pending' %}
+                    <a href="{{ url_for('admin_approve_loan', loan_id=loan.id) }}">
+                        <button class="approve-btn">Approve</button>
+                    </a>
+                    <a href="{{ url_for('admin_reject_loan', loan_id=loan.id) }}">
+                        <button class="reject-btn">Reject</button>
+                    </a>
+                {% else %}
+                    <span>{{ loan.status }}</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <a href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+</body>
+</html>
